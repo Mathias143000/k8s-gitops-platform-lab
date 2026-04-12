@@ -1,0 +1,26 @@
+nameOverride: webhook-ingestion-service
+
+image:
+  repository: k8s-lab/webhook-ingestion-service
+  tag: "2.0.0"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+apiKey: "demo-api-key"
+webhookSecret: "demo-webhook-secret"
+ingress:
+  enabled: true
+  className: nginx
+  host: webhook.127.0.0.1.sslip.io
+  tlsSecretName: webhook-demo-tls
+  clusterIssuer: selfsigned-cluster-issuer
+  annotations: {}
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 192Mi
+  limits:
+    cpu: 500m
+    memory: 384Mi
+

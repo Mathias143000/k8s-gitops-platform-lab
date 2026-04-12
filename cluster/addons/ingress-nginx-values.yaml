@@ -1,0 +1,10 @@
+controller:
+  kind: DaemonSet
+  hostPort:
+    enabled: true
+  service:
+    type: ClusterIP
+  watchIngressWithoutClass: true
+  admissionWebhooks:
+    enabled: true
+

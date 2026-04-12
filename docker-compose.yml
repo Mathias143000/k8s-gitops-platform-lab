@@ -1,0 +1,9 @@
+services:
+  git-daemon:
+    build:
+      context: .
+      dockerfile: git-daemon/Dockerfile
+    ports:
+      - "9418:9418"
+    volumes:
+      - ./artifacts/git:/git

@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: service-desk-demo
+  namespace: argocd
+spec:
+  project: portfolio-demo
+  source:
+    repoURL: git://host.k3d.internal:9418/platform.git
+    targetRevision: main
+    path: gitops/apps/service-desk-api
+    helm:
+      valueFiles:
+        - values-demo.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: service-desk
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: webhook-demo
+  namespace: argocd
+spec:
+  project: portfolio-demo
+  source:
+    repoURL: git://host.k3d.internal:9418/platform.git
+    targetRevision: main
+    path: gitops/apps/webhook-ingestion-service
+    helm:
+      valueFiles:
+        - values-demo.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: webhook
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground

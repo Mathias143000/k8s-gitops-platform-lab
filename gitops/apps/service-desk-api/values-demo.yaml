@@ -1,0 +1,9 @@
+image:
+  repository: k8s-lab/service-desk-api
+  tag: "2.0.0"
+
+appVersion: "2.0.1"
+ingress:
+  host: service-desk.127.0.0.1.sslip.io
+  tlsSecretName: service-desk-demo-tls
+

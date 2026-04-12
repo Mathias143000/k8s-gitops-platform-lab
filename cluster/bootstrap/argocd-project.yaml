@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: portfolio-demo
+  namespace: argocd
+spec:
+  description: Portfolio workloads deployed through the local GitOps remote.
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: service-desk
+      server: https://kubernetes.default.svc
+    - namespace: webhook
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+
