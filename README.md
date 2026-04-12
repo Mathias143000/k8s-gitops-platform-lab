@@ -2,6 +2,8 @@
 
 Runnable Kubernetes + GitOps showcase built around `k3d`, `Argo CD`, `Helm`, `ingress-nginx`, `cert-manager`, and two real portfolio workloads.
 
+This repository is intentionally the baseline GitOps lab in the portfolio, not the primary enterprise flagship. Its job is to show the clean cloud-native delivery mechanics before the broader on-prem platform story in `enterprise-onprem-platform-lab`.
+
 The goal is to prove a believable local GitOps flow end to end:
 
 - local cluster bootstrap
@@ -10,6 +12,18 @@ The goal is to prove a believable local GitOps flow end to end:
 - TLS through ingress
 - reproducible rollout and rollback
 - basic workload metrics and autoscaling primitives
+
+## Portfolio Role
+
+Use this repository when the discussion is specifically about:
+
+- baseline Kubernetes bootstrap
+- `Argo CD` sync mechanics
+- `Helm` packaging for workloads
+- ingress + local TLS flow
+- rollout / rollback through Git commits
+
+Use `enterprise-onprem-platform-lab` instead when the discussion moves into enterprise-style platform scope such as `Vault`, `MetalLB`, storage, broader observability, and a more complete on-prem operator story.
 
 ## What this project demonstrates
 
