@@ -6,16 +6,23 @@ metadata:
 spec:
   description: Portfolio workloads deployed through the local GitOps remote.
   sourceRepos:
-    - "*"
+    - git://host.k3d.internal:9418/platform.git
   destinations:
     - namespace: service-desk
       server: https://kubernetes.default.svc
     - namespace: webhook
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
-    - group: "*"
-      kind: "*"
+    - group: ""
+      kind: Namespace
   namespaceResourceWhitelist:
-    - group: "*"
-      kind: "*"
-
+    - group: ""
+      kind: Secret
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment
+    - group: autoscaling
+      kind: HorizontalPodAutoscaler
+    - group: networking.k8s.io
+      kind: Ingress

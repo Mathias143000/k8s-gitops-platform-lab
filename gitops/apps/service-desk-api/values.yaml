@@ -8,6 +8,8 @@ image:
 appVersion: "2.0.0"
 djangoSecretKey: "change-me-service-desk"
 replicaCount: 1
+revisionHistoryLimit: 3
+progressDeadlineSeconds: 180
 readinessPath: /api/health/
 ingress:
   enabled: true
@@ -25,9 +27,18 @@ resources:
     cpu: 500m
     memory: 512Mi
 
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
 hpa:
   enabled: true
   minReplicas: 1
   maxReplicas: 3
   targetCPUUtilizationPercentage: 70
-

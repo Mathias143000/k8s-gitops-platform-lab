@@ -21,9 +21,11 @@ jobs:
       - name: Helm lint webhook
         run: helm lint gitops/apps/webhook-ingestion-service
 
+      - name: GitOps policy check
+        run: python scripts/policy_check.py
+
       - name: Trivy config scan
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: config
           scan-ref: .
-

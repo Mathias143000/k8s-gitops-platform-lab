@@ -35,6 +35,7 @@ Use `enterprise-onprem-platform-lab` instead when the discussion moves into ente
 - `Ingress NGINX` + `cert-manager` self-signed TLS for local demo traffic
 - `metrics-server` + HPA baseline for workload scaling
 - reproducible release and rollback flow driven by Git commits
+- repo-local GitOps policy checks for Argo CD scope, chart hygiene, and baseline workload hardening
 
 ## Fixed stack
 
@@ -45,9 +46,10 @@ Use `enterprise-onprem-platform-lab` instead when the discussion moves into ente
 - `cert-manager`
 - `metrics-server`
 - `HPA`
+- repo-local GitOps policy check in CI
 - `Trivy` config scan in CI
 
-Items intentionally left for a later hardening pass are called out in [todo.md](todo.md).
+Items intentionally left for a later hardening pass are called out in [docs/hardening.md](docs/hardening.md).
 
 ## Architecture
 
@@ -58,6 +60,7 @@ See [docs/architecture.md](docs/architecture.md) for the diagram and dependency 
 1. Validate charts and bootstrap tooling:
 
 ```powershell
+python scripts\policy_check.py
 powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1
 ```
 
@@ -118,6 +121,7 @@ The evidence bundle is written to `artifacts/evidence/latest/` and includes:
 The current CI path intentionally stays lightweight and validates the repository as a baseline GitOps lab:
 
 - `Helm` chart lint for both workloads
+- repo-local GitOps policy check
 - `Trivy` config scan
 
 The full runtime bootstrap, sync, and rollback proof still lives in the local operator path described in this README and in [runbooks/deploy-and-rollback.md](runbooks/deploy-and-rollback.md). That is a deliberate trade-off: this repo optimizes for a clean GitOps teaching/demo path, while the heavier platform proof is delegated to `enterprise-onprem-platform-lab`.
@@ -125,10 +129,11 @@ The full runtime bootstrap, sync, and rollback proof still lives in the local op
 ## Runbook
 
 See [runbooks/deploy-and-rollback.md](runbooks/deploy-and-rollback.md) for bootstrap, release, rollback, and cleanup steps.
+See [docs/hardening.md](docs/hardening.md) for the second-wave GitOps hardening checks.
 
 ## Known limitations
 
-- `SOPS`, `cosign`, and admission policy enforcement are not part of the first DoD slice yet. They remain backlog items for the security-hardening pass.
+- `SOPS`, `cosign`, and admission policy enforcement are still backlog items. This wave adds repo-local policy checks, not full admission control.
 - The local GitOps remote is served through a lightweight `git daemon` container for simplicity. It is good enough for a real local Argo CD sync, but it is not the same thing as a production Git hosting setup.
 - The workloads are deployed in their minimal API-ready modes, not with their full async/stateful dependency graphs.
 - TLS is issued through a self-signed local `ClusterIssuer`, which is appropriate for the lab but not for a production public endpoint.

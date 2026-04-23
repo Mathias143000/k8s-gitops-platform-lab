@@ -8,6 +8,8 @@ image:
 replicaCount: 1
 apiKey: "demo-api-key"
 webhookSecret: "demo-webhook-secret"
+revisionHistoryLimit: 3
+progressDeadlineSeconds: 180
 ingress:
   enabled: true
   className: nginx
@@ -24,3 +26,12 @@ resources:
     cpu: 500m
     memory: 384Mi
 
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL

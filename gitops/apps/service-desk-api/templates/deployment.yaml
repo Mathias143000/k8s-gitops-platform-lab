@@ -4,6 +4,8 @@ metadata:
   name: {{ include "service-desk-api.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  progressDeadlineSeconds: {{ .Values.progressDeadlineSeconds }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "service-desk-api.fullname" . }}
@@ -12,10 +14,14 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "service-desk-api.fullname" . }}
     spec:
+      securityContext:
+{{ toYaml .Values.podSecurityContext | indent 8 }}
       containers:
         - name: api
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+{{ toYaml .Values.containerSecurityContext | indent 12 }}
           ports:
             - containerPort: 8000
               name: http

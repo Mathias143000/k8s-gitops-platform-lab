@@ -4,6 +4,8 @@ metadata:
   name: {{ include "webhook-ingestion-service.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  progressDeadlineSeconds: {{ .Values.progressDeadlineSeconds }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "webhook-ingestion-service.fullname" . }}
@@ -12,10 +14,14 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "webhook-ingestion-service.fullname" . }}
     spec:
+      securityContext:
+{{ toYaml .Values.podSecurityContext | indent 8 }}
       containers:
         - name: app
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+{{ toYaml .Values.containerSecurityContext | indent 12 }}
           ports:
             - containerPort: 8000
               name: http
@@ -60,4 +66,3 @@ spec:
       volumes:
         - name: webhook-data
           emptyDir: {}
-
