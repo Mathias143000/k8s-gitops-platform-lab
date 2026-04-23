@@ -133,16 +133,18 @@ See [docs/hardening.md](docs/hardening.md) for the second-wave GitOps hardening 
 
 ## Known limitations
 
-- `SOPS`, `cosign`, and admission policy enforcement are still backlog items. This wave adds repo-local policy checks, not full admission control.
+- `SOPS`, `cosign`, and admission policy enforcement are outside this baseline lab. This wave adds repo-local policy checks, not full admission control.
 - The local GitOps remote is served through a lightweight `git daemon` container for simplicity. It is good enough for a real local Argo CD sync, but it is not the same thing as a production Git hosting setup.
 - The workloads are deployed in their minimal API-ready modes, not with their full async/stateful dependency graphs.
 - TLS is issued through a self-signed local `ClusterIssuer`, which is appropriate for the lab but not for a production public endpoint.
 - This repository intentionally stops before the broader enterprise platform shell so it does not duplicate the role of `enterprise-onprem-platform-lab`.
 
-## Backlog / future improvements
+## Explicit Non-Goals
 
 - Add `SOPS`-encrypted secrets in the GitOps repo
 - Add `cosign` signing and policy checks for unsigned images
 - Add `ShareChat` as the stretch real-time workload
 - Add failure drill documentation with explicit SLI/SLO notes
 - Extend the lab with a real registry-backed image promotion flow
+
+These are intentionally delegated to stronger platform/security repos so this project stays a clean baseline GitOps demo.
